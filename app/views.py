@@ -7,5 +7,6 @@ def index():
     '''
     This is the view root function that returns the index page and its data
     '''
+    
     title = 'Pitch Perfect, the best pitching website.'
     return render_template('index.html', title = title)

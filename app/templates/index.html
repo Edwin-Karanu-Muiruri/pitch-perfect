@@ -10,6 +10,18 @@
     {% endif %}
 </head>
 <body>
-    
+    <!--Intro paragraph-->
+    <h1>Pitch Perfect</h1>
+    <h3>Create one minute pitches for various categories and let other people tell you how they feel about your pitch</h3>
+    <h6>Pitch until its Perfect</h6>
+
+    <!--Pitches available-->
+    <h2>Recent Pitches</h2>
+    <ul>
+        {% for recent_pitches in pitches %}
+            <li>Pitches go here</li>
+        {% endfor %}
+    </ul>
+
 </body>
 </html>

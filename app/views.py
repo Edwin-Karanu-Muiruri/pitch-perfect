@@ -1,5 +1,8 @@
 from flask import render_template #takes the name of a template file as the first argument and searches and loads the file
 from app import app
+from .models import review
+from .forms import PitchReviewForm
+Review = review.Review
 
 # all views below
 @app.route('/')
@@ -31,12 +34,19 @@ def profile():
     return render_template('profile.html')
 
 @app.route('/review')
-def review():
+def comment_review():
     '''
     View function for the reviews and comments
     '''
+    form = PitchReviewForm()
 
-    review = review()
+    if form.validate_on_submit():
+        title = form.title.data
+        review = form.review.data
+        comment_review = review(title,review)
+        comment_review.save_review()
+        
 
-    return render_template('/review..html')
+
+    return render_template('/review.html',pitch_review_form = form)
 

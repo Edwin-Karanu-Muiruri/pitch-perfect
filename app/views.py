@@ -10,3 +10,12 @@ def index():
     
     title = 'Pitch Perfect, the best pitching website.'
     return render_template('index.html', title = title)
+
+@app.route('/categories')
+def categories():
+    '''
+    View categories function that returns the categories and various pitches in the category
+    '''
+    categories = categories()
+
+    return render_template('categories.html')

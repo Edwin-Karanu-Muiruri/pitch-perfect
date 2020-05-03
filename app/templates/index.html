@@ -1,29 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if title %}
-    <title> {{title}} </title>
-    {% else %}
-    <title>Pitch Perfect, the best pitching website.</title>
-    {% endif %}
-</head>
-<body>
-    <!--Navigation bar-->
-    <h1>Pitch Perfect</h1>
+{% extends 'base.html' %}
 
-    <!--Intro paragraph-->
-    <h3>Create one minute pitches for various categories and let other people tell you how they feel about your pitch</h3>
-    <h6>Pitch until its Perfect</h6>
+<!--Navigation bar-->
+<h1>Pitch Perfect</h1>
 
-    <!--Pitches available-->
-    <h2>Recent Pitches</h2>
-    <ul>
-        {% for recent_pitches in pitches %}
-            <li>Pitches go here</li>
-        {% endfor %}
-    </ul>
+<!--Intro paragraph-->
+<h3>Create one minute pitches for various categories and let other people tell you how they feel about your pitch</h3>
+<h6>Pitch until its Perfect</h6>
 
-</body>
-</html>
+<!--Pitches available-->
+<h2>Recent Pitches</h2>
+<ul>
+    {% for recent_pitches in pitches %}
+        <li>Pitches go here</li>
+    {% endfor %}
+</ul>

@@ -19,3 +19,13 @@ def categories():
     categories = categories()
 
     return render_template('categories.html')
+
+@app.route('/profile')
+def profile():
+    '''
+    View function to display the profile of a logged in user
+    '''
+
+    profile = profile()
+
+    return render_template('profile.html')

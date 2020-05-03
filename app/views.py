@@ -29,3 +29,14 @@ def profile():
     profile = profile()
 
     return render_template('profile.html')
+
+@app.route('/review')
+def review():
+    '''
+    View function for the reviews and comments
+    '''
+
+    review = review()
+
+    return render_template('/review..html')
+

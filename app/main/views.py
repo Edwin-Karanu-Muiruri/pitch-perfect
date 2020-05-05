@@ -1,7 +1,8 @@
-from flask import render_template #takes the name of a template file as the first argument and searches and loads the file
+from flask import render_template,request,redirect,url_for,abort  #takes the name of a template file as the first argument and searches and loads the file
 from .import main
-from ..models import Review
-from .forms import PitchReviewForm
+from ..models import Review, User
+from .forms import PitchReviewForm,UpdateProfile
+from .. import db
 from ..models import Pitch
 from flask_login import login_required
 
@@ -25,16 +26,35 @@ def categories():
 
     return render_template('categories.html')
 
-@main.route('/profile')
-def profile():
+@main.route('/user/<uname>')
+def profile(uname):
     '''
     View function to display the profile of a logged in user
     '''
+    user = User.query.filter_by(username = uname).first()
+    if user is None:
+        abort(404)
 
-    profile = profile()
+    return render_template('profile/profile.html', user = user)
 
-    return render_template('profile.html')
+@main.route('/user/<uname>/update',methods = ['GET','POST'])
+@login_required
+def update_profile(uname):
+    user = User.query.filter_by(username = uname).first()
+    if user is None:
+        abort(404)
 
+    form = UpdateProfile()
+
+    if form.validate_on_submit():
+        user.bio = form.bio.data
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('.profile',uname=user.username))
+
+    return render_template('profile/update.html',form =form)
 @main.route('/comments')
 def comments():
     '''

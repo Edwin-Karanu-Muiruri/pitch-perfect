@@ -1,12 +1,12 @@
 from flask import render_template #takes the name of a template file as the first argument and searches and loads the file
-from app import app
-from .models import review
+from .import main
+from ..models import Review
 from .forms import PitchReviewForm
-from .models import pitch
-Review = review.Review
+from ..models import Pitch
+
 
 # all views below
-@app.route('/')
+@main.route('/')
 def index():
     '''
     This is the view root function that returns the index page and its data
@@ -15,7 +15,7 @@ def index():
     title = 'Pitch Perfect, the best pitching website.'
     return render_template('index.html', title = title)
 
-@app.route('/categories')
+@main.route('/categories')
 def categories():
     '''
     View categories function that returns the categories and various pitches in the category
@@ -24,7 +24,7 @@ def categories():
 
     return render_template('categories.html')
 
-@app.route('/profile')
+@main.route('/profile')
 def profile():
     '''
     View function to display the profile of a logged in user
@@ -34,7 +34,7 @@ def profile():
 
     return render_template('profile.html')
 
-@app.route('/comments')
+@main.route('/comments')
 def comments():
     '''
     This is the view function to display the comments and reviews.
@@ -44,7 +44,7 @@ def comments():
 
     return render_template('pitch.html',reviews = reviews)
 
-@app.route('/pitch/review/new', methods = ['GET','POST'])
+@main.route('/pitch/review/new', methods = ['GET','POST'])
 def comment_review():
     '''
     View function for the reviews and comments

@@ -16,3 +16,8 @@ class DevConfig(Config):
     Develpment config child class
     '''
     DEBUG = True
+
+config_options = {
+    'development':DevConfig,
+    'production':ProdConfig
+}

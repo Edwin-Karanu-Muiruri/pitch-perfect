@@ -3,6 +3,7 @@ from .import main
 from ..models import Review
 from .forms import PitchReviewForm
 from ..models import Pitch
+from flask_login import login_required
 
 
 # all views below
@@ -45,7 +46,8 @@ def comments():
     return render_template('pitch.html',reviews = reviews)
 
 @main.route('/pitch/review/new', methods = ['GET','POST'])
-def comment_review():
+@login_required
+def new_review():
     '''
     View function for the reviews and comments
     '''
@@ -54,8 +56,8 @@ def comment_review():
     if form.validate_on_submit():
         title = form.title.data
         review = form.review.data
-        comment_review = review(title,review)
-        comment_review.save_review()
+        new_review = review(title,review)
+        new_review.save_review()
     
 
 

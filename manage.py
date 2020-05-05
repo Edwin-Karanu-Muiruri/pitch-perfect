@@ -1,10 +1,15 @@
 from app import create_app,db
-from app import app
-from app.models import User
+from flask_script import Manager,Server
+from app.models import User,Role
+
+app = create_app('development')
+
+manager = Manager(app)
+manager.add_command('server',Server)
 
 @manager.shell
 def make_shell_context():
-    return dict(app = app,db = db,User = User)
+    return dict(app = app,db = db,User = User, Role = Role)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    manager.run()

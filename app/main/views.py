@@ -2,6 +2,7 @@ from flask import render_template #takes the name of a template file as the firs
 from app import app
 from .models import review
 from .forms import PitchReviewForm
+from .models import pitch
 Review = review.Review
 
 # all views below
@@ -33,7 +34,17 @@ def profile():
 
     return render_template('profile.html')
 
-@app.route('/review')
+@app.route('/comments')
+def comments():
+    '''
+    This is the view function to display the comments and reviews.
+    '''
+    
+    reviews = Review.get_reviews(id)
+
+    return render_template('pitch.html',reviews = reviews)
+
+@app.route('/pitch/review/new', methods = ['GET','POST'])
 def comment_review():
     '''
     View function for the reviews and comments
@@ -45,7 +56,7 @@ def comment_review():
         review = form.review.data
         comment_review = review(title,review)
         comment_review.save_review()
-        
+    
 
 
     return render_template('/review.html',pitch_review_form = form)

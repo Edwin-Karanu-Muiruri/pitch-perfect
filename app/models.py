@@ -2,12 +2,13 @@ from . import db
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_login import UserMixin
 from . import login_manager
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-class Pitch:
+class Pitch(db.Model):
     '''
     Pitch class to define the pitch objects
     '''
@@ -20,15 +21,21 @@ class Pitch:
         self.upvotes = author
         self.comments = comments
 
-class Review:
+class Review(db.Model):
     all_reviews = []
-    def __init__(self,pitch_id,title,review):
-        self.pitch_id = pitch_id
-        self.title = title
-        self.review = review
+    __tablename__ = 'reviews'
+
+    id = db.Column(db.Integer,primary_key = True)
+    pitch_id = db.Column(db.Integer)
+    pitch_title = db.Colummn(db.String)
+    pitch_review = db.Column(db.String)
+    posted = db.Column((db.DateTime,default = datetime.utcnow))
+    user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+
 
     def save_review(self):
-        Review.all_reviews.append(self)
+        db.session.add(self)
+        db.session.commit()
 
     @classmethod
     def clear_reviews(cls):
@@ -37,12 +44,8 @@ class Review:
     @classmethod
     def get_reviews(cls,pitch_id):
         comments = []
-
-        for review in cls.all_reviews:
-            if review.pitch_id == pitch_id:
-                comments.append(review)
-        
-        return comments
+        reviews =  Review.query.filter_by(movie_id = id).all()
+        return reviews
 
 class User(UserMixin,db.Model):
     __tablename__ = 'users'
@@ -53,6 +56,7 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     password_secure = db.Column(db.String(255))
+    reviews = db.relationship('Review',backref = 'user',lazy = "dynamic")
 
     @property
     def password(self):

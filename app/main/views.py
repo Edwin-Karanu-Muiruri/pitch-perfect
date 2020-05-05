@@ -4,7 +4,7 @@ from ..models import Review, User
 from .forms import PitchReviewForm,UpdateProfile
 from .. import db,photos
 from ..models import Pitch
-from flask_login import login_required
+from flask_login import login_required,current_user
 
 
 # all views below
@@ -67,7 +67,7 @@ def comments():
 
 @main.route('/pitch/review/new', methods = ['GET','POST'])
 @login_required
-def new_review():
+def new_review(pitch_id):
     '''
     View function for the reviews and comments
     '''

@@ -1,7 +1,7 @@
 from flask import render_template,request,redirect,url_for,abort  #takes the name of a template file as the first argument and searches and loads the file
 from .import main
 from ..models import Review, User, Pitch
-from .forms import PitchReviewForm,UpdateProfile
+from .forms import PitchReviewForm,UpdateProfile,PitchForm
 from .. import db,photos
 from flask_login import login_required,current_user
 
@@ -32,10 +32,11 @@ def profile(uname):
     View function to display the profile of a logged in user
     '''
     user = User.query.filter_by(username = uname).first()
+    pitches = Pitch.query.filter_by(user_id = user.id).order_by(Pitch.posted.desc())
     if user is None:
         abort(404)
 
-    return render_template('profile/profile.html', user = user)
+    return render_template('profile/profile.html', user = user,pitches = pitches)
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
 @login_required
@@ -91,3 +92,35 @@ def update_pic(uname):
         user.profile_pic_path = path
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
+
+@main.route('/pitches/<category>')
+def pitches(category):
+    pitches = Pitch.query.filter_by(category = category).order_by(Pitch.posted.desc())
+
+    return render_template("pitches.html", pitches = pitches, category = category)
+
+
+@main.route('/user/<uname>/pitch',methods= ['GET','POST'])
+@login_required
+def new_pitch(uname):
+    user = User.query.filter_by(username = uname).first()
+    if user is None:
+        abort(404)
+
+    form = PitchForm()
+    pitch = Pitch()
+
+    if form.validate_on_submit():
+        pitch.category = form.category.data
+        pitch.title = form.title.data
+        pitch.pitch_statement = form.pitch.data
+        pitch.likes = 0
+        pitch.dislikes = 0
+        pitch.user_id = current_user.id
+
+        db.session.add(pitch)
+        db.session.commit()
+
+        return redirect(url_for('.profile',uname=user.username))
+
+    return render_template('new_pitch.html',uname=uname, user = user, PitchForm = form)

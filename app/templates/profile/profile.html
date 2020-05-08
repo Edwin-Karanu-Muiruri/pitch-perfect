@@ -2,12 +2,9 @@
 
 {% block content %}
 <div class="container">
-<div class="row">
-<!-- displaying  Username-->
-  <div class="col-md-4">
+<div>
+  <div>
     <h3> {{user.username| capitalize}} </h3>
-
-    <!--Displaying user bio-->
     {% if user.bio %}
       <p> {{user.bio}}</p>
     {%else%}
@@ -15,8 +12,7 @@
     {% endif %}
   </div>
 
-  <!--Display profile photo-->
-  <div class="col-md-4">
+  <div>
 
     {% if user.profile_pic_path %}
     <img src="{{url_for('static',filename=user.profile_pic_path)}}" alt="" class="img-thumbnail">
@@ -34,6 +30,7 @@
   </div>
 </div>
 </div>
+<br>
 <div class="updatingProfile">
     {% if user == current_user %}
     <a href="{{url_for('main.update_profile',uname=user.username)}}">Edit profile</a>

@@ -22,7 +22,7 @@ class Pitch(db.Model):
     dislikes = db.Column(db.Integer)
     vote_count = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    comment = db.relationship("Review", backref = "pitch", lazy = "dynamic")
+    Review = db.relationship("Review", backref = "pitch", lazy = "dynamic")
     pitch_statement = db.Column(db.String())
 
     def like(self):
@@ -40,6 +40,10 @@ class Pitch(db.Model):
     def save_pitch(self):
         db.session.add(self)
         db.session.commit()
+
+    def get_reviews(self):
+        pitch = Pitch.query.filter_by(id = self.id).first()
+        Review = Review.query.filter_by(pitch_id = pitch.id).order_by(Review.posted.desc())
 class Review(db.Model):
     
     __tablename__ = 'reviews'
@@ -57,10 +61,6 @@ class Review(db.Model):
         db.session.commit()
 
     @classmethod
-    def clear_reviews(cls):
-        Review.all_reviews.clear()
-
-    @classmethod
     def get_reviews(cls,pitch_id):
 
         reviews =  Review.query.filter_by(pitch_id = id).all()
@@ -75,6 +75,7 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
+    pitches = db.relationship("Pitch",backref = 'user',lazy = "dynamic")
     reviews = db.relationship('Review',backref = 'user',lazy = "dynamic")
 
     @property

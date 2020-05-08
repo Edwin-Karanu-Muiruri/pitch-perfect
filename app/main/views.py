@@ -1,9 +1,8 @@
 from flask import render_template,request,redirect,url_for,abort  #takes the name of a template file as the first argument and searches and loads the file
 from .import main
-from ..models import Review, User
+from ..models import Review, User, Pitch
 from .forms import PitchReviewForm,UpdateProfile
 from .. import db,photos
-from ..models import Pitch
 from flask_login import login_required,current_user
 
 
@@ -78,8 +77,6 @@ def new_review(pitch_id):
         review = form.review.data
         new_review = review(title,review)
         new_review.save_review()
-    
-
 
     return render_template('/review.html',pitch_review_form = form)
 

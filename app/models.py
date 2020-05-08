@@ -22,14 +22,14 @@ class Pitch(db.Model):
         self.comments = comments
 
 class Review(db.Model):
-    all_reviews = []
+    
     __tablename__ = 'reviews'
 
     id = db.Column(db.Integer,primary_key = True)
     pitch_id = db.Column(db.Integer)
     pitch_title = db.Colummn(db.String)
     pitch_review = db.Column(db.String)
-    posted = db.Column((db.DateTime,default = datetime.utcnow))
+    posted = db.Column(db.DateTime,default= datetime.utcnow)
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
 
 
@@ -43,8 +43,8 @@ class Review(db.Model):
 
     @classmethod
     def get_reviews(cls,pitch_id):
-        comments = []
-        reviews =  Review.query.filter_by(movie_id = id).all()
+
+        reviews =  Review.query.filter_by(pitch_id = id).all()
         return reviews
 
 class User(UserMixin,db.Model):

@@ -6,6 +6,7 @@ from .. import db,photos
 from flask_login import login_required,current_user
 
 
+
 # all views below
 @main.route('/')
 def index():

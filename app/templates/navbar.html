@@ -5,7 +5,24 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">Categories</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href='#' id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Categories
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <ul>
+                        <li><a class="dropdown-item text-left" href="{{url_for('main.pitches',category='pickup lines')}}">Comical pitches</a></li>
+                        <br>
+                        <li><a class="dropdown-item text-left" href="{{url_for('main.pitches',category='product')}}">Innovation pitches</a></li>
+                        <br>
+                        <li><a class="dropdown-item text-left" href="{{url_for('main.pitches',category='jokes')}}">Technology pitches/a></li>
+                        <br>
+                        <li><a class="dropdown-item text-left" href="{{url_for('main.pitches',category='innovative')}}">Product pitches</a></li>
+                        <br>
+                        <li><a class="dropdown-item text-left" href="{{url_for('main.pitches',category='technology')}}">Marketing pitches</a></li>
+                      </ul>
+                    </div>
+                  </li>
                 <li><a href="{{url_for('auth.register')}}">Sign Up</a></li>
                 {% if current_user.is_authenticated %}
                 <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
